@@ -1,0 +1,133 @@
+[
+    {
+        "id": "a5e054932ff72567",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0717822c92c4d89c",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "837cccdf7b1c89e9",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "f60a8275f89415ac",
+        "type": "mqtt in",
+        "z": "a5e054932ff72567",
+        "name": "",
+        "topic": "planta/temperatura",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "0717822c92c4d89c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 190,
+        "y": 100,
+        "wires": [
+            [
+                "cd98a94645afaa59",
+                "f63d2b4523a404d7"
+            ]
+        ]
+    },
+    {
+        "id": "cd98a94645afaa59",
+        "type": "debug",
+        "z": "a5e054932ff72567",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "f63d2b4523a404d7",
+        "type": "function",
+        "z": "a5e054932ff72567",
+        "name": "function 1",
+        "func": "msg.payload = {\n    temperatura: Number(msg.payload.temperatura)\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 220,
+        "wires": [
+            [
+                "b0a047a0bdb87baf"
+            ]
+        ]
+    },
+    {
+        "id": "b0a047a0bdb87baf",
+        "type": "influxdb out",
+        "z": "a5e054932ff72567",
+        "influxdb": "837cccdf7b1c89e9",
+        "name": "",
+        "measurement": "temperatura",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "industrial",
+        "bucket": "sensores",
+        "x": 670,
+        "y": 220,
+        "wires": []
+    }
+]
