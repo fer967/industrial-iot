@@ -10,7 +10,7 @@
     {
         "id": "0717822c92c4d89c",
         "type": "mqtt-broker",
-        "name": "",
+        "name": "[v2.0] planta/bomba/estado",
         "broker": "mosquitto",
         "port": 1883,
         "clientid": "",
@@ -45,6 +45,21 @@
         "port": 8086,
         "protocol": "http",
         "database": "database",
+        "name": "planta/horno/estado",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "b64552262c247886",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
         "name": "",
         "usetls": false,
         "tls": "",
@@ -52,6 +67,83 @@
         "url": "http://influxdb:8086",
         "timeout": 10,
         "rejectUnauthorized": true
+    },
+    {
+        "id": "4b4e6ea490ca28fc",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "c9416fe558e12a78",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "f9666abfe2453839",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
     },
     {
         "id": "f60a8275f89415ac",
@@ -66,12 +158,13 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 190,
+        "x": 130,
         "y": 100,
         "wires": [
             [
                 "cd98a94645afaa59",
-                "f63d2b4523a404d7"
+                "f63d2b4523a404d7",
+                "bacd95394aee4f3f"
             ]
         ]
     },
@@ -88,37 +181,155 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 380,
-        "y": 100,
+        "x": 400,
+        "y": 40,
         "wires": []
     },
     {
         "id": "f63d2b4523a404d7",
         "type": "function",
         "z": "a5e054932ff72567",
-        "name": "function 1",
-        "func": "msg.payload = {\n    temperatura: parseFloat(msg.payload.temperatura)\n};\n\nreturn msg;\n",
+        "name": "data_horno",
+        "func": "msg.payload = {\n    temperatura: Number(msg.payload)\n};\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 300,
-        "y": 220,
+        "x": 390,
+        "y": 180,
         "wires": [
             [
-                "b0a047a0bdb87baf"
+                "c1a8dd7a09830e40"
             ]
         ]
     },
     {
-        "id": "b0a047a0bdb87baf",
+        "id": "c27d6fa3c4a169ad",
+        "type": "mqtt in",
+        "z": "a5e054932ff72567",
+        "name": "",
+        "topic": "planta/nivel",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "0717822c92c4d89c",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 340,
+        "wires": [
+            [
+                "a2dca7f564ab452b",
+                "782870021c866b90"
+            ]
+        ]
+    },
+    {
+        "id": "a2dca7f564ab452b",
+        "type": "function",
+        "z": "a5e054932ff72567",
+        "name": "data_nivel",
+        "func": "msg.payload = {\n    nivel: Number(msg.payload)\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 420,
+        "wires": [
+            [
+                "7d6a4808bdf802f9"
+            ]
+        ]
+    },
+    {
+        "id": "36e6cb1761541993",
+        "type": "mqtt out",
+        "z": "a5e054932ff72567",
+        "name": "",
+        "topic": "planta/horno/estado",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "c9416fe558e12a78",
+        "x": 680,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "36be3e9c82d6cc76",
+        "type": "mqtt out",
+        "z": "a5e054932ff72567",
+        "name": "",
+        "topic": "planta/bomba/estado",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "f9666abfe2453839",
+        "x": 680,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "782870021c866b90",
+        "type": "function",
+        "z": "a5e054932ff72567",
+        "name": "nivel_autom",
+        "func": "let nivel = parseInt(msg.payload);\n\nif (nivel < 30) {\n    msg.payload = \"ON\";\n} else {\n    msg.payload = \"OFF\";\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 340,
+        "wires": [
+            [
+                "36be3e9c82d6cc76"
+            ]
+        ]
+    },
+    {
+        "id": "bacd95394aee4f3f",
+        "type": "function",
+        "z": "a5e054932ff72567",
+        "name": "horno_autom",
+        "func": "let temperatura = parseInt(msg.payload);\n\nif (temperatura < 40) {\n    msg.payload = \"ON\";\n} else {\n    msg.payload = \"OFF\";\n}\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 100,
+        "wires": [
+            [
+                "36e6cb1761541993"
+            ]
+        ]
+    },
+    {
+        "id": "c1a8dd7a09830e40",
         "type": "influxdb out",
         "z": "a5e054932ff72567",
-        "influxdb": "837cccdf7b1c89e9",
+        "influxdb": "b64552262c247886",
         "name": "",
-        "measurement": "temperatura",
+        "measurement": "temperatura1",
         "precision": "",
         "retentionPolicy": "",
         "database": "database",
@@ -126,8 +337,26 @@
         "retentionPolicyV18Flux": "",
         "org": "industrial",
         "bucket": "sensores",
-        "x": 670,
-        "y": 220,
+        "x": 740,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "7d6a4808bdf802f9",
+        "type": "influxdb out",
+        "z": "a5e054932ff72567",
+        "influxdb": "4b4e6ea490ca28fc",
+        "name": "",
+        "measurement": "nivel1",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "industrial",
+        "bucket": "sensores",
+        "x": 710,
+        "y": 420,
         "wires": []
     }
 ]
